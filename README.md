@@ -11,7 +11,7 @@ A Python-based MCP server for accessing [TheMealDB API](https://www.themealdb.co
 - Images and videos for many recipes
 - Free API access for basic features
 
-This MCP server provides a convenient interface to TheMealDB's API through Claude, allowing you to search for and retrieve meal information using natural language.
+This MCP server provides a convenient interface to TheMealDB's API through Claude, Clide, or similar AI clients, allowing you to search for and retrieve meal information using natural language.
 
 ## Features
 
@@ -25,15 +25,15 @@ This MCP server provides a convenient interface to TheMealDB's API through Claud
 python mealserver.py
 ```
 
-## Cline Integration
+## MCP Client Integration
 
-To use this server with Cline, you need to add it to your `cline_mcp_settings.json` file. This file is typically located at:
+To use this server with Claude, Clide, or similar MCP-compatible clients, you need to add it to your client's MCP settings configuration. For example, with Cline (a VS Code extension for Claude), you would add it to your `cline_mcp_settings.json` file. This file is typically located at:
 
 - Windows: `%APPDATA%\Code\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json`
 - macOS: `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
 - Linux: `~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`
 
-Add the following configuration to the `mcpServers` object in your `cline_mcp_settings.json` file:
+Add the following configuration to the `mcpServers` object in your settings file:
 
 ```json
 "mealserver": {
@@ -49,4 +49,4 @@ Add the following configuration to the `mcpServers` object in your `cline_mcp_se
 
 Make sure to adjust the directory path to match your installation location.
 
-After adding this configuration, restart Cline or reload the window in VS Code. You should then be able to use the mealserver tools in your conversations with Claude.
+After adding this configuration, restart your MCP client or reload the window. You should then be able to use the mealserver tools in your conversations with your AI assistant.
