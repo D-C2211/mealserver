@@ -1,6 +1,17 @@
 # Meal Server
 
-A Python-based MCP server for TheMealDB API.
+A Python-based MCP server for accessing [TheMealDB API](https://www.themealdb.com/).
+
+## About TheMealDB
+
+[TheMealDB](https://www.themealdb.com/) is an open, crowd-sourced database of recipes from around the world. The database includes:
+
+- Detailed meal recipes with ingredients and instructions
+- Categorization by meal type, region, and ingredients
+- Images and videos for many recipes
+- Free API access for basic features
+
+This MCP server provides a convenient interface to TheMealDB's API through Claude, allowing you to search for and retrieve meal information using natural language.
 
 ## Features
 
