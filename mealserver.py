@@ -111,7 +111,7 @@ async def get_random_meal() -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
-# tool of gettinng meals by their main ingredient
+# tool of getting meals by their main ingredient
 @mcp.tool()
 async def get_meal_by_ingredient(ingredient: str) -> str:
     """Get meal by ingredient.
