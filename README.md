@@ -110,6 +110,13 @@ This MCP server provides several tools that allow AI assistants to interact with
    - Creates a formatted text file with all ingredients needed for a recipe
    - Useful for meal planning and grocery shopping
 
+8. **get_meal_by_multiple_ingredients**
+   - Finds meals that contain multiple specified ingredients
+   - Parameter: `ingredients` (a list of ingredients, e.g., ["beef", "potatoes"])
+   - Returns meals that contain ALL of the specified ingredients
+   - Perfect for finding recipes based on ingredients you have on hand
+   - Useful for reducing food waste and creative cooking
+
 These tools can be used individually or in combination to find recipes, explore cuisines, and plan meals based on various criteria.
 
 ## MCP Resources
