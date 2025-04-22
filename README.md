@@ -27,6 +27,8 @@ This MCP server provides a convenient interface to TheMealDB's API through Claud
 
 ## Usage
 
+To run the server:
+
 ```
 python mealserver.py
 ```
