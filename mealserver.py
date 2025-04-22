@@ -171,6 +171,86 @@ async def get_meal_by_area(area: str) -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
+# tool for finding meals that contain multiple ingredients
+@mcp.tool()
+async def get_meal_by_multiple_ingredients(ingredients: list) -> str:
+    """Get meals containing multiple ingredients.
+
+    Args:
+        ingredients: List of ingredients (e.g. ["beef", "potatoes"])
+    """
+    if not ingredients or len(ingredients) == 0:
+        return "Please provide at least one ingredient."
+    
+    # Start with the first ingredient to get initial results
+    first_ingredient = ingredients[0]
+    url = f"{MEALDB_API_BASE}/filter.php?i={first_ingredient}"
+    data = await make_meal_request(url)
+    
+    if not data or "meals" not in data or not data["meals"]:
+        return f"No meals found containing {first_ingredient}."
+    
+    # If only one ingredient was provided, return those meals
+    if len(ingredients) == 1:
+        meals = []
+        for meal_summary in data["meals"]:
+            # Get full meal details
+            meal_id = meal_summary.get("idMeal")
+            if meal_id:
+                meal_url = f"{MEALDB_API_BASE}/lookup.php?i={meal_id}"
+                meal_data = await make_meal_request(meal_url)
+                if meal_data and "meals" in meal_data and meal_data["meals"]:
+                    meals.append(format_meal(meal_data["meals"][0]))
+        
+        if not meals:
+            return f"Could not fetch detailed information for meals with {first_ingredient}."
+        
+        return "\n---\n".join(meals)
+    
+    # For multiple ingredients, we need to filter further
+    matching_meals = []
+    remaining_ingredients = ingredients[1:]
+    
+    # For each meal that contains the first ingredient
+    for meal_summary in data["meals"]:
+        meal_id = meal_summary.get("idMeal")
+        if not meal_id:
+            continue
+        
+        # Get full meal details
+        meal_url = f"{MEALDB_API_BASE}/lookup.php?i={meal_id}"
+        meal_data = await make_meal_request(meal_url)
+        
+        if not meal_data or "meals" not in meal_data or not meal_data["meals"]:
+            continue
+        
+        meal = meal_data["meals"][0]
+        
+        # Check if meal contains all remaining ingredients
+        contains_all = True
+        for ingredient in remaining_ingredients:
+            ingredient_found = False
+            # Check all 20 possible ingredient slots
+            for i in range(1, 21):
+                meal_ingredient = meal.get(f'strIngredient{i}', '')
+                if meal_ingredient and ingredient.lower() in meal_ingredient.lower():
+                    ingredient_found = True
+                    break
+            
+            if not ingredient_found:
+                contains_all = False
+                break
+        
+        # If meal contains all ingredients, add it to results
+        if contains_all:
+            matching_meals.append(format_meal(meal))
+    
+    if not matching_meals:
+        ingredients_str = ", ".join(ingredients)
+        return f"No meals found containing all these ingredients: {ingredients_str}"
+    
+    return "\n---\n".join(matching_meals)
+
 # tool of saving all ingredients of a meal to a shoppling list file
 @mcp.tool()
 async def save_ingredients_to_file(meal_name: str, ingredients_with_measures: list, file_path: str) -> str:
