@@ -5,10 +5,11 @@ from mcp.server.fastmcp import FastMCP
 # Initialize FastMCP server
 mcp = FastMCP("mealserver", host="127.0.0.1", port=8080)
 
-# Constants
+# Constants for mealdb connection
 MEALDB_API_BASE = "https://www.themealdb.com/api/json/v1/1"
 USER_AGENT = "mealserver-app/1.0"
 
+# function to make a request to the meal api
 async def make_meal_request(url: str) -> dict[str, Any] | None:
     """Make a request to the MealDB API with proper error handling."""
     print(f"Making request to: {url}")
@@ -25,20 +26,35 @@ async def make_meal_request(url: str) -> dict[str, Any] | None:
             return response.json()
         except Exception:
             return None
-        
+
+# function to format a meal response  
 def format_meal(meal: dict) -> str:
     """Format a meal into a readable string."""
     props = meal
+    
+    # Extract ingredients and measurements
+    ingredients_section = "Ingredients:\n"
+    for i in range(1, 21):  # TheMealDB API provides up to 20 ingredients
+        ingredient = props.get(f'strIngredient{i}')
+        measure = props.get(f'strMeasure{i}')
+        
+        if ingredient and ingredient.strip() and measure and measure.strip():
+            ingredients_section += f"- {measure.strip()} {ingredient.strip()}\n"
+        elif ingredient and ingredient.strip():
+            ingredients_section += f"- {ingredient.strip()}\n"
+    
     return f"""
 Meal: {props.get('strMeal', 'Unknown')}
 Category: {props.get('strCategory', 'Unknown')}
 Country: {props.get('strArea', 'Unknown')}
+{ingredients_section}
 Instructions: {props.get('strInstructions', 'No instruction available')}
 Thumbnail: {props.get('strMealThumb', 'No thumbnail provided')}
 Tags: {props.get('strTags', 'No tags provided')}
 Youtube: {props.get('strYoutube', 'No YouTube link provided')}
 """
 
+# function to format a mesl category reponse
 def format_category(category: dict) -> str:
     """Format a category into a readable string."""
     props = category
@@ -48,6 +64,7 @@ Thumbnail: {props.get('strCategoryThumb', 'No thumbnail provided')}
 Description: {props.get('strCategoryDescription', 'No description provided')}
 """
 
+# tool for getting meals by their first letter in their name
 @mcp.tool()
 async def get_meal_by_letter(letter: str) -> str:
     """Get meal by letter.
@@ -67,6 +84,7 @@ async def get_meal_by_letter(letter: str) -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
+# tool for getting meals by a specified word in their name
 @mcp.tool()
 async def get_meal_by_name(name: str) -> str:
     """Get meal by name.
@@ -86,6 +104,7 @@ async def get_meal_by_name(name: str) -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
+# tool for getting a single random meal
 @mcp.tool()
 async def get_random_meal() -> str:
     """Get random meal.
@@ -102,7 +121,7 @@ async def get_random_meal() -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
-
+# tool for getting all existing meal categories
 @mcp.tool()
 async def get_categories() -> str:
     """Get all meal categories.
@@ -119,6 +138,7 @@ async def get_categories() -> str:
     meals = [format_category(category) for category in data["categories"]]
     return "\n---\n".join(meals)
 
+# tool of gettinng meals by their main ingredient
 @mcp.tool()
 async def get_meal_by_ingredient(ingredient: str) -> str:
     """Get meal by ingredient.
@@ -138,6 +158,7 @@ async def get_meal_by_ingredient(ingredient: str) -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
+# tool of getting meals by a specified category
 @mcp.tool()
 async def get_meal_by_category(category: str) -> str:
     """Get meal by category.
@@ -157,6 +178,7 @@ async def get_meal_by_category(category: str) -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
+# tool of getting meals by a specified country or area
 @mcp.tool()
 async def get_meal_by_area(area: str) -> str:
     """Get meal by area.
