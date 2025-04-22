@@ -54,16 +54,6 @@ Tags: {props.get('strTags', 'No tags provided')}
 Youtube: {props.get('strYoutube', 'No YouTube link provided')}
 """
 
-# function to format a mesl category reponse
-def format_category(category: dict) -> str:
-    """Format a category into a readable string."""
-    props = category
-    return f"""
-Category: {props.get('strCategory', 'Unknown')}
-Thumbnail: {props.get('strCategoryThumb', 'No thumbnail provided')}
-Description: {props.get('strCategoryDescription', 'No description provided')}
-"""
-
 # tool for getting meals by their first letter in their name
 @mcp.tool()
 async def get_meal_by_letter(letter: str) -> str:
@@ -119,23 +109,6 @@ async def get_random_meal() -> str:
         return "No meal found."
 
     meals = [format_meal(meal) for meal in data["meals"]]
-    return "\n---\n".join(meals)
-
-# tool for getting all existing meal categories
-@mcp.tool()
-async def get_categories() -> str:
-    """Get all meal categories.
-    """
-    url = f"{MEALDB_API_BASE}/categories.php"
-    data = await make_meal_request(url)
-    
-    if not data or "categories" not in data:
-        return "Unable to fetch any category."
-
-    if not data["categories"]:
-        return "No category found."
-
-    meals = [format_category(category) for category in data["categories"]]
     return "\n---\n".join(meals)
 
 # tool of gettinng meals by their main ingredient
@@ -230,6 +203,97 @@ async def save_ingredients_to_file(meal_name: str, ingredients_with_measures: li
         return f"Successfully saved ingredients for {meal_name} to {full_path}"
     except Exception as e:
         return f"Error saving file: {str(e)}"
+
+# resource for accessing all meal categories
+@mcp.resource(uri="http://localhost/meal_categories")
+async def get_meal_categories_resource() -> dict:
+    """Resource that provides a list of all available meal categories.
+    
+    This resource fetches all meal categories from TheMealDB API and returns them
+    in a structured format that can be used as context for meal recommendations,
+    filtering, or browsing.
+    
+    Returns:
+        A dictionary containing a list of meal categories with their descriptions and thumbnails.
+    """
+    url = f"{MEALDB_API_BASE}/categories.php"
+    data = await make_meal_request(url)
+    
+    if not data or "categories" not in data:
+        return {"error": "Unable to fetch categories", "categories": []}
+    
+    categories = []
+    for category in data["categories"]:
+        categories.append({
+            "name": category.get("strCategory", "Unknown"),
+            "description": category.get("strCategoryDescription", "No description available"),
+            "thumbnail": category.get("strCategoryThumb", "")
+        })
+    
+    return {
+        "count": len(categories),
+        "categories": categories
+    }
+
+# resource for accessing all cuisine areas/countries
+@mcp.resource(uri="http://localhost/cuisine_areas")
+async def get_cuisine_areas_resource() -> dict:
+    """Resource that provides a list of all available cuisine areas (countries).
+    
+    This resource fetches all cuisine areas from TheMealDB API and returns them
+    in a structured format that can be used for geographical meal exploration
+    and filtering.
+    
+    Returns:
+        A dictionary containing a list of cuisine areas.
+    """
+    url = f"{MEALDB_API_BASE}/list.php?a=list"
+    data = await make_meal_request(url)
+    
+    if not data or "meals" not in data:
+        return {"error": "Unable to fetch cuisine areas", "areas": []}
+    
+    areas = []
+    for area in data["meals"]:
+        areas.append(area.get("strArea", "Unknown"))
+    
+    return {
+        "count": len(areas),
+        "areas": areas
+    }
+
+# resource for accessing common ingredients
+@mcp.resource(uri="http://localhost/common_ingredients")
+async def get_common_ingredients_resource() -> dict:
+    """Resource that provides a list of common ingredients used in recipes.
+    
+    This resource fetches a list of ingredients from TheMealDB API and returns them
+    in a structured format that can be used for recipe suggestions, substitutions,
+    or ingredient-based meal exploration.
+    
+    Returns:
+        A dictionary containing a list of common ingredients.
+    """
+    url = f"{MEALDB_API_BASE}/list.php?i=list"
+    data = await make_meal_request(url)
+    
+    if not data or "meals" not in data:
+        return {"error": "Unable to fetch ingredients", "ingredients": []}
+    
+    ingredients = []
+    for item in data["meals"]:
+        ingredient = {
+            "name": item.get("strIngredient", "Unknown"),
+            "description": item.get("strDescription", "No description available")
+        }
+        # Only include ingredients with a name
+        if ingredient["name"] and ingredient["name"] != "Unknown":
+            ingredients.append(ingredient)
+    
+    return {
+        "count": len(ingredients),
+        "ingredients": ingredients
+    }
 
 if __name__ == "__main__":
     # Initialize and run the server
