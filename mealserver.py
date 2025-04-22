@@ -198,6 +198,39 @@ async def get_meal_by_area(area: str) -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
+# tool of saving all ingredients of a meal to a shoppling list file
+@mcp.tool()
+async def save_ingredients_to_file(meal_name: str, ingredients_with_measures: list, file_path: str) -> str:
+    """Save ingredients of a meal to a file that could be used as a type of shopping list.
+
+    Args:
+        meal_name: Name of the meal
+        ingredients_with_measures: List of ingredients with their measures
+        file_path: Path where to save the ingredients file
+    """
+    import os
+    
+    # Create standardized filename with the pattern "<name of meal> - ingredients"
+    filename = f"{meal_name} - ingredients.txt"
+        
+    # Combine directory with the new filename
+    full_path = os.path.join(file_path, filename)
+    
+    # Write to file
+    try:
+        with open(full_path, 'w') as f:
+            f.write(f"Ingredients for {meal_name}:\n\n")
+            for item in ingredients_with_measures:
+                if isinstance(item, dict) and 'ingredient' in item and 'measure' in item:
+                    # Format as "measure ingredient"
+                    f.write(f"- {item['measure']} {item['ingredient']}\n")
+                else:
+                    # If it's already a string or has another format, write it as is
+                    f.write(f"- {item}\n")
+        return f"Successfully saved ingredients for {meal_name} to {full_path}"
+    except Exception as e:
+        return f"Error saving file: {str(e)}"
+
 if __name__ == "__main__":
     # Initialize and run the server
     mcp.run(transport='stdio')
