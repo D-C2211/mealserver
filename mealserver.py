@@ -111,26 +111,6 @@ async def get_random_meal() -> str:
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)
 
-# tool of getting meals by their main ingredient
-@mcp.tool()
-async def get_meal_by_ingredient(ingredient: str) -> str:
-    """Get meal by ingredient.
-
-    Args:
-        ingredient: ingredient (e.g. chicken_breast)
-    """
-    url = f"{MEALDB_API_BASE}/filter.php?i={ingredient}"
-    data = await make_meal_request(url)
-
-    if not data or "meals" not in data:
-        return "Unable to fetch meals or no meal found for this ingredient."
-
-    if not data["meals"]:
-        return "No meal found for this ingredient."
-
-    meals = [format_meal(meal) for meal in data["meals"]]
-    return "\n---\n".join(meals)
-
 # tool of getting meals by a specified category
 @mcp.tool()
 async def get_meal_by_category(category: str) -> str:
@@ -167,6 +147,26 @@ async def get_meal_by_area(area: str) -> str:
 
     if not data["meals"]:
         return "No meal found for this area."
+
+    meals = [format_meal(meal) for meal in data["meals"]]
+    return "\n---\n".join(meals)
+
+# tool of getting meals by one ingredient
+@mcp.tool()
+async def get_meal_by_ingredient(ingredient: str) -> str:
+    """Get meal by ingredient.
+
+    Args:
+        ingredient: ingredient (e.g. chicken_breast)
+    """
+    url = f"{MEALDB_API_BASE}/filter.php?i={ingredient}"
+    data = await make_meal_request(url)
+
+    if not data or "meals" not in data:
+        return "Unable to fetch meals or no meal found for this ingredient."
+
+    if not data["meals"]:
+        return "No meal found for this ingredient."
 
     meals = [format_meal(meal) for meal in data["meals"]]
     return "\n---\n".join(meals)

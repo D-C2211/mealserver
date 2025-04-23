@@ -89,19 +89,26 @@ This MCP server provides several tools that allow AI assistants to interact with
    - Returns meals containing the specified ingredient
    - Ideal for planning meals based on available ingredients
 
-5. **get_meal_by_category**
+5. **get_meal_by_multiple_ingredients**
+   - Finds meals that contain multiple specified ingredients
+   - Parameter: `ingredients` (a list of ingredients, e.g., ["beef", "potatoes"])
+   - Returns meals that contain ALL of the specified ingredients
+   - Perfect for finding recipes based on ingredients you have on hand
+   - Useful for reducing food waste and creative cooking
+
+6. **get_meal_by_category**
    - Retrieves meals from a specific category
    - Parameter: `category` (e.g., "Seafood", "Vegetarian")
    - Returns meals belonging to the specified category
    - Useful for finding meals within dietary preferences or meal types
 
-6. **get_meal_by_area**
+7. **get_meal_by_area**
    - Finds meals from a specific cuisine or region
    - Parameter: `area` (e.g., "Italian", "Mexican")
    - Returns meals from the specified cuisine
    - Perfect for exploring international cuisines
 
-7. **save_ingredients_to_file**
+8. **save_ingredients_to_file**
    - Saves a meal's ingredients to a file (can be used as a shopping list)
    - Parameters:
      - `meal_name`: Name of the meal
@@ -110,12 +117,7 @@ This MCP server provides several tools that allow AI assistants to interact with
    - Creates a formatted text file with all ingredients needed for a recipe
    - Useful for meal planning and grocery shopping
 
-8. **get_meal_by_multiple_ingredients**
-   - Finds meals that contain multiple specified ingredients
-   - Parameter: `ingredients` (a list of ingredients, e.g., ["beef", "potatoes"])
-   - Returns meals that contain ALL of the specified ingredients
-   - Perfect for finding recipes based on ingredients you have on hand
-   - Useful for reducing food waste and creative cooking
+
 
 These tools can be used individually or in combination to find recipes, explore cuisines, and plan meals based on various criteria.
 
