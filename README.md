@@ -36,6 +36,138 @@ To run the server:
 python mealserver.py
 ```
 
+## Usage Examples
+
+Here are some examples of how to interact with the mealserver through an AI assistant like Claude:
+
+### Finding Recipes by Name
+
+```
+User: Can you find me a recipe for Arrabiata?
+
+Claude: I'll search for Arrabiata recipes using the mealserver.
+[Uses get_meal_by_name tool with parameter "Arrabiata"]
+
+I found Pasta all'Arrabiata! Here's the recipe:
+
+Meal: Pasta all'Arrabiata
+Category: Vegetarian
+Country: Italian
+
+Ingredients:
+- 1 pound Penne Rigate
+- 1/4 cup Olive Oil
+- 3 cloves Garlic
+- 1 tin Chopped Tomatoes
+- 1/2 teaspoon Red Chile Flakes
+- 1/2 teaspoon Italian Seasoning
+- 6 leaves Basil
+- Spinkling Parmigiano-Reggiano
+
+Instructions: [Full cooking instructions would appear here]
+```
+
+### Getting a Random Recipe for Inspiration
+
+```
+User: I'm not sure what to cook tonight. Any suggestions?
+
+Claude: Let me get a random recipe suggestion for you.
+[Uses get_random_meal tool]
+
+How about trying Beef and Mustard Pie? Here's the recipe:
+
+Meal: Beef and Mustard Pie
+Category: Beef
+Country: British
+
+Ingredients:
+- 2 tbs Olive Oil
+- 1 Onion
+- 2 Carrots
+- 2 tbs Plain Flour
+- 2 tbs Mustard
+- 2 Bay Leaves
+- 500g Beef
+- 500g Puff Pastry
+- 300g Mushrooms
+- 1 Egg Yolk
+- 2 tbs Thyme
+- 200g Creme Fraiche
+- 0.5 Beef Stock Cube
+
+Instructions: [Full cooking instructions would appear here]
+```
+
+### Finding Recipes Based on Ingredients You Have
+
+```
+User: I have chicken, potatoes, and rosemary. What can I make?
+
+Claude: Let me find recipes that use those ingredients.
+[Uses get_meal_by_multiple_ingredients tool with parameters ["chicken", "potatoes", "rosemary"]]
+
+I found Roast Chicken with Lemon and Rosemary! Here's the recipe:
+
+Meal: Roast Chicken with Lemon and Rosemary
+Category: Chicken
+Country: British
+
+Ingredients:
+- 1 whole Chicken
+- 2 pounds Potatoes
+- 1 sprig Rosemary
+- 1 Lemon
+- 2 tbs Olive Oil
+- 1 tsp Salt
+- 1 tsp Black Pepper
+
+Instructions: [Full cooking instructions would appear here]
+```
+
+### Exploring Cuisine from a Specific Region
+
+```
+User: I'd like to try making some Thai food. What options do I have?
+
+Claude: Let me find some Thai recipes for you.
+[Uses get_meal_by_area tool with parameter "Thai"]
+
+Here are some Thai recipes you might enjoy:
+
+1. Thai Green Curry
+2. Pad See Ew
+3. Massaman Beef Curry
+4. Thai Red Curry Fish Cakes
+5. Tom Yum Soup
+
+Would you like the full recipe for any of these?
+```
+
+### Creating a Shopping List
+
+```
+User: I want to make Beef Stroganoff. Can you create a shopping list for me?
+
+Claude: Let me find the recipe and create a shopping list for you.
+[Uses get_meal_by_name tool with parameter "Beef Stroganoff"]
+[Then uses save_ingredients_to_file tool with the ingredients]
+
+I've created a shopping list for Beef Stroganoff and saved it to "Beef Stroganoff - ingredients.txt". Here's what you'll need:
+
+- 1 lb Beef
+- 2 tbs Olive Oil
+- 1 Onion
+- 1 tbs Plain Flour
+- 1 tbs Tomato Puree
+- 1 cup Beef Stock
+- 1 tbs Worcestershire Sauce
+- 1 tsp Dijon Mustard
+- 2 cups Mushrooms
+- 1 cup Sour Cream
+- Parsley (for garnish)
+```
+
 ## MCP Client Integration
 
 To use this server with Claude, Clide, or similar MCP-compatible clients, you need to add it to your client's MCP settings configuration. For example, with Cline (a VS Code extension for Claude), you would add it to your `cline_mcp_settings.json` file. This file is typically located at:
