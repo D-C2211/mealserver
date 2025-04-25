@@ -375,6 +375,104 @@ async def get_common_ingredients_resource() -> dict:
         "ingredients": ingredients
     }
 
+# prompt for showing recipes from a given cuisine and a given category
+@mcp.prompt("Show me {cuisine} {category} recipes")
+async def find_cuisine_category_recipes(cuisine: str, category: str) -> str:
+    """Find recipes from a specific cuisine and category.
+    
+    Args:
+        cuisine: The cuisine/area (e.g., Italian, Mexican)
+        category: The meal category (e.g., Dessert, Seafood)
+    """
+    # Get meals by area first
+    area_result = await get_meal_by_area(cuisine)
+    if "No meal found" in area_result:
+        return f"Sorry, I couldn't find any {cuisine} recipes."
+    
+    # Then get meals by category
+    category_result = await get_meal_by_category(category)
+    if "No meal found" in category_result:
+        return f"Sorry, I couldn't find any {category} recipes."
+    
+    # Simple filtering by checking if meal names appear in both results
+    area_meals = area_result.split("\n---\n")
+    category_meals = category_result.split("\n---\n")
+    
+    matching_meals = []
+    for area_meal in area_meals:
+        area_meal_name = ""
+        for line in area_meal.split("\n"):
+            if line.startswith("Meal:"):
+                area_meal_name = line.strip()
+                break
+        
+        for category_meal in category_meals:
+            if area_meal_name and area_meal_name in category_meal:
+                matching_meals.append(area_meal)
+                break
+    
+    if matching_meals:
+        return "\n---\n".join(matching_meals)
+    else:
+        return f"I couldn't find any {cuisine} {category} recipes. Would you like to see all {cuisine} recipes or all {category} recipes instead?"
+
+# prompt for showing all possible recipes of a given category
+@mcp.prompt("What {category} recipes can I make?")
+async def find_category_recipes(category: str) -> str:
+    """Find recipes from a specific category.
+    
+    Args:
+        category: The meal category (e.g., Seafood, Vegetarian)
+    """
+    return await get_meal_by_category(category)
+
+# prompt for showing all possible recipes of a given category that start with a given first letter
+@mcp.prompt("Find {category} recipes that start with {letter}")
+async def find_recipes_by_letter_and_category(category: str, letter: str) -> str:
+    """Find recipes from a category that start with a specific letter.
+    
+    Args:
+        category: The meal category (e.g., Breakfast, Dessert)
+        letter: The starting letter (e.g., A, B)
+    """
+    # Get meals by letter
+    letter_result = await get_meal_by_letter(letter.upper())
+    if "No meal found" in letter_result:
+        return f"Sorry, I couldn't find any recipes starting with '{letter}'."
+    
+    # Get meals by category
+    category_result = await get_meal_by_category(category)
+    if "No meal found" in category_result:
+        return f"Sorry, I couldn't find any {category} recipes."
+    
+    # Find meals that appear in both results
+    letter_meals = letter_result.split("\n---\n")
+    category_meals = category_result.split("\n---\n")
+    
+    matching_meals = []
+    for letter_meal in letter_meals:
+        letter_meal_name = ""
+        for line in letter_meal.split("\n"):
+            if line.startswith("Meal:"):
+                letter_meal_name = line.strip()
+                break
+        
+        for category_meal in category_meals:
+            if letter_meal_name and letter_meal_name in category_meal:
+                matching_meals.append(letter_meal)
+                break
+    
+    if matching_meals:
+        return "\n---\n".join(matching_meals)
+    else:
+        return f"I couldn't find any {category} recipes starting with '{letter}'. Would you like to see all recipes starting with '{letter}' or all {category} recipes instead?"
+
+# prompt for showing all possible recipes of a given category
+@mcp.prompt("Suggest a random recipe")
+async def suggest_random_recipe() -> str:
+    """Suggest a random recipe."""
+    return await get_random_meal()
+
 if __name__ == "__main__":
     # Initialize and run the server
     mcp.run(transport='stdio')
