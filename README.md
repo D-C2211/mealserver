@@ -123,3 +123,65 @@ This MCP server provides several tools that allow AI assistants to interact with
 
 
 These tools can be used individually or in combination to find recipes, explore cuisines, and plan meals based on various criteria.
+
+## MCP Resources
+
+In addition to tools, this MCP server provides several resources that can be accessed directly by AI assistants. Resources are data sources that provide context and information without requiring specific parameters.
+
+### Available Resources
+
+1. **Meal Categories** (URI: `http://localhost/meal_categories`)
+   - Provides a comprehensive list of all 14 meal categories available in TheMealDB
+   - Categories include: Beef, Chicken, Dessert, Lamb, Miscellaneous, Pasta, Pork, Seafood, Side, Starter, Vegan, Vegetarian, Breakfast, and Goat
+   - Each category includes a name, description, and thumbnail image URL
+
+2. **Cuisine Areas** (URI: `http://localhost/cuisine_areas`)
+   - Provides a list of all 29 cuisine regions/countries available in TheMealDB
+   - Regions include: American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, French, Greek, Indian, Irish, Italian, Jamaican, Japanese, Kenyan, Malaysian, Mexican, Moroccan, Polish, Portuguese, Russian, Spanish, Thai, Tunisian, Turkish, Ukrainian, Uruguayan, and Vietnamese
+
+3. **Common Ingredients** (URI: `http://localhost/common_ingredients`)
+   - Provides access to a database of 575+ common cooking ingredients
+   - Each ingredient includes a name and many include detailed descriptions
+   - Ingredients span various categories including meats, vegetables, fruits, grains, dairy, herbs, spices, and more
+
+These resources can be used to explore the available meal options, understand different cuisine types, and discover ingredients for recipe planning.
+
+## MCP Prompts
+
+In addition to tools and resources, this MCP server provides several prompts that can be used directly by AI assistants. Prompts are pre-defined natural language patterns that map to specific functionality, making it easier to interact with the server.
+
+### Available Prompts
+
+1. **Show me {cuisine} {category} recipes**
+   - Finds recipes that match both a specific cuisine and category
+   - Parameters:
+     - `cuisine`: The cuisine/area (e.g., Italian, Mexican)
+     - `category`: The meal category (e.g., Dessert, Seafood)
+   - Returns meals that belong to both the specified cuisine and category
+   - Example: "Show me Italian Pasta recipes"
+   - Useful for exploring specific types of dishes within a cuisine
+
+2. **What {category} recipes can I make?**
+   - Retrieves all recipes from a specific category
+   - Parameter: `category`: The meal category (e.g., Seafood, Vegetarian)
+   - Returns all meals belonging to the specified category
+   - Example: "What Dessert recipes can I make?"
+   - Useful for exploring meal options within a dietary preference or meal type
+
+3. **Find {category} recipes that start with {letter}**
+   - Finds recipes from a specific category that start with a particular letter
+   - Parameters:
+     - `category`: The meal category (e.g., Breakfast, Dessert)
+     - `letter`: The starting letter (e.g., A, B)
+   - Returns meals that belong to the specified category and start with the given letter
+   - Example: "Find Vegetarian recipes that start with B"
+   - Perfect for narrowing down recipe options or playing food-related games
+
+4. **Suggest a random recipe**
+   - Retrieves a random meal from the database
+   - No parameters required
+   - Returns complete details for a randomly selected meal
+   - Example: "Suggest a random recipe"
+   - Great for meal inspiration or discovering new recipes to try
+
+These prompts provide a more natural way to interact with the meal database, allowing for intuitive queries that combine multiple search criteria.
