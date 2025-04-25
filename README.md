@@ -25,6 +25,9 @@ This MCP server provides a convenient interface to TheMealDB's API through Claud
 - Access cuisine areas/regions (Italian, Mexican, Indian, etc.)
 - Access common ingredients database (575+ ingredients)
 
+### Prompts
+- Access meals with the help of some prompts (pre-defined templates to assist more natural language requests)
+
 ## Usage
 
 To run the server:
@@ -120,25 +123,3 @@ This MCP server provides several tools that allow AI assistants to interact with
 
 
 These tools can be used individually or in combination to find recipes, explore cuisines, and plan meals based on various criteria.
-
-## MCP Resources
-
-In addition to tools, this MCP server provides several resources that can be accessed directly by AI assistants. Resources are data sources that provide context and information without requiring specific parameters.
-
-### Available Resources
-
-1. **Meal Categories** (URI: `http://localhost/meal_categories`)
-   - Provides a comprehensive list of all 14 meal categories available in TheMealDB
-   - Categories include: Beef, Chicken, Dessert, Lamb, Miscellaneous, Pasta, Pork, Seafood, Side, Starter, Vegan, Vegetarian, Breakfast, and Goat
-   - Each category includes a name, description, and thumbnail image URL
-
-2. **Cuisine Areas** (URI: `http://localhost/cuisine_areas`)
-   - Provides a list of all 29 cuisine regions/countries available in TheMealDB
-   - Regions include: American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, French, Greek, Indian, Irish, Italian, Jamaican, Japanese, Kenyan, Malaysian, Mexican, Moroccan, Polish, Portuguese, Russian, Spanish, Thai, Tunisian, Turkish, Ukrainian, Uruguayan, and Vietnamese
-
-3. **Common Ingredients** (URI: `http://localhost/common_ingredients`)
-   - Provides access to a database of 575+ common cooking ingredients
-   - Each ingredient includes a name and many include detailed descriptions
-   - Ingredients span various categories including meats, vegetables, fruits, grains, dairy, herbs, spices, and more
-
-These resources can be used to explore the available meal options, understand different cuisine types, and discover ingredients for recipe planning.
