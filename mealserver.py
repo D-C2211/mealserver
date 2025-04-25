@@ -1,30 +1,63 @@
 from typing import Any
+import os
 import httpx
+import logging
+from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Configure logging
+log_level = os.getenv("LOG_LEVEL", "INFO")
+logging.basicConfig(
+    level=getattr(logging, log_level),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("mealserver")
+
+# Get configuration from environment variables
+host = os.getenv("MCP_SERVER_HOST", "127.0.0.1")
+port = int(os.getenv("MCP_SERVER_PORT", "8080"))
+
 # Initialize FastMCP server
-mcp = FastMCP("mealserver", host="127.0.0.1", port=8080)
+mcp = FastMCP("mealserver", host=host, port=port)
 
 # Constants for mealdb connection
-MEALDB_API_BASE = "https://www.themealdb.com/api/json/v1/1"
+MEALDB_API_KEY = os.getenv("MEALDB_API_KEY", "1")  # Default to free tier if not provided
+MEALDB_API_BASE = f"https://www.themealdb.com/api/json/v1/{MEALDB_API_KEY}"
 USER_AGENT = "mealserver-app/1.0"
+
+logger.info(f"Starting mealserver on {host}:{port}")
+logger.info(f"Using TheMealDB API: {MEALDB_API_BASE}")
 
 # function to make a request to the meal api
 async def make_meal_request(url: str) -> dict[str, Any] | None:
     """Make a request to the MealDB API with proper error handling."""
-    print(f"Making request to: {url}")
+    logger.debug(f"Making request to: {url}")
     headers = {
         "User-Agent": USER_AGENT,
         "Accept": "application/json"
     }
-    print(f"Headers: {headers}")
+    logger.debug(f"Request headers: {headers}")
     
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(url, headers=headers, timeout=30.0)
             response.raise_for_status()
+            logger.debug(f"Response status: {response.status_code}")
             return response.json()
-        except Exception:
+        except httpx.HTTPStatusError as e:
+            logger.error(f"HTTP error: {e.response.status_code} - {e.response.reason_phrase}")
+            return None
+        except httpx.RequestError as e:
+            logger.error(f"Request error: {str(e)}")
+            return None
+        except Exception as e:
+            logger.error(f"Unexpected error: {str(e)}")
             return None
 
 # function to format a meal response  
