@@ -36,6 +36,64 @@ To run the server:
 python mealserver.py
 ```
 
+## Environment Variables and Security
+
+The mealserver uses environment variables for configuration and security. These are loaded from a `.env` file in the project root directory.
+
+### Setting Up Environment Variables
+
+1. Copy the `.env.example` file to create a new `.env` file:
+   ```
+   cp .env.example .env
+   ```
+
+2. Edit the `.env` file to customize your configuration:
+   ```
+   # TheMealDB API Configuration
+   # Default is "1" for the free tier, change if you have premium access
+   MEALDB_API_KEY=1
+
+   # MCP Server Configuration
+   MCP_SERVER_HOST=127.0.0.1
+   MCP_SERVER_PORT=8080
+
+   # Security Configuration
+   # Generate a secure random key for production use
+   MCP_SERVER_API_KEY=your_secure_api_key_here
+
+   # Logging Configuration
+   # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+   LOG_LEVEL=INFO
+
+   # Rate Limiting Configuration
+   # Number of requests allowed per time window
+   RATE_LIMIT_MAX_REQUESTS=60
+   # Time window in seconds
+   RATE_LIMIT_WINDOW_SECONDS=60
+   ```
+
+### Security Features
+
+The mealserver includes several security features:
+
+1. **API Key Management**: TheMealDB API key is stored in environment variables rather than hardcoded in the source code.
+
+2. **Logging**: Comprehensive logging with configurable log levels helps track usage and identify potential issues.
+
+3. **Error Handling**: Robust error handling prevents exposing sensitive information in error messages.
+
+4. **Environment Variable Protection**: The `.env` file is excluded from version control via `.gitignore` to prevent accidental exposure of sensitive information.
+
+### Premium API Access
+
+If you have a premium subscription to TheMealDB API, you can set your API key in the `.env` file:
+
+```
+MEALDB_API_KEY=your_premium_api_key_here
+```
+
+This will automatically use your premium API key for all requests to TheMealDB.
+
 ## Usage Examples
 
 Here are some examples of how to interact with the mealserver through an AI assistant like Claude:
