@@ -1,10 +1,11 @@
 [project]
 name = "mealserver"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Python-based MCP server for accessing TheMealDB API with secure environment variable management"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=1.6.0",
+    "python-dotenv>=1.0.0",
 ]
