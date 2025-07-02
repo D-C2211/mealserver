@@ -2,6 +2,10 @@
 
 A Python-based MCP server for accessing [TheMealDB API](https://www.themealdb.com/).
 
+## 🏆 Certification
+
+This MCP server is **certified by MCP Review** - [View Certification](https://mcphub.com/mcp-servers/d-c2211/mealserver)
+
 ## About TheMealDB
 
 [TheMealDB](https://www.themealdb.com/) is an open, crowd-sourced database of recipes from around the world. The database includes:
@@ -338,7 +342,7 @@ These resources can be used to explore the available meal options, understand di
 
 ## MCP Prompts
 
-In addition to tools and resources, this MCP server provides several prompts that can be used directly by AI assistants. Prompts are pre-defined natural language patterns that map to specific functionality, making it easier to interact with the server.
+In addition to tools and resources, this MCP server provides some prompts that can be used directly by AI assistants. Prompts are pre-defined natural language patterns that map to specific functionality, making it easier to interact with the server.
 
 ### Available Prompts
 
@@ -351,14 +355,7 @@ In addition to tools and resources, this MCP server provides several prompts tha
    - Example: "Show me Italian Pasta recipes"
    - Useful for exploring specific types of dishes within a cuisine
 
-2. **What {category} recipes can I make?**
-   - Retrieves all recipes from a specific category
-   - Parameter: `category`: The meal category (e.g., Seafood, Vegetarian)
-   - Returns all meals belonging to the specified category
-   - Example: "What Dessert recipes can I make?"
-   - Useful for exploring meal options within a dietary preference or meal type
-
-3. **Find {category} recipes that start with {letter}**
+2. **Find {category} recipes that start with {letter}**
    - Finds recipes from a specific category that start with a particular letter
    - Parameters:
      - `category`: The meal category (e.g., Breakfast, Dessert)
@@ -366,12 +363,5 @@ In addition to tools and resources, this MCP server provides several prompts tha
    - Returns meals that belong to the specified category and start with the given letter
    - Example: "Find Vegetarian recipes that start with B"
    - Perfect for narrowing down recipe options or playing food-related games
-
-4. **Suggest a random recipe**
-   - Retrieves a random meal from the database
-   - No parameters required
-   - Returns complete details for a randomly selected meal
-   - Example: "Suggest a random recipe"
-   - Great for meal inspiration or discovering new recipes to try
 
 These prompts provide a more natural way to interact with the meal database, allowing for intuitive queries that combine multiple search criteria.
